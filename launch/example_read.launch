@@ -1,0 +1,21 @@
+<launch>
+  
+  <!-- Publish point cloud from file -->
+  <node pkg="point_cloud_io" type="read" name="read" output="screen">
+    <param name="file_path" value="/home/echo/桌面/2018-2-3/7.vtk" />
+    <param name="topic"     value="/point_cloud" />
+    <param name="frame"     value="map" />
+    <param name="rate"      value="1.0" />
+  </node>
+    
+  <!-- Visualize the point cloud in rviz -->
+  <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find point_cloud_io)/examples/point_cloud_io.rviz" / -->
+  <node name="voxel_filter" pkg="voxel_filter" type="voxel_filter_node" />
+    <node name="passthrough" pkg="voxel_filter" type="passthrough" />
+  <node name="cloud_to_map" pkg="cloud_to_map" type="cloud_to_map_node">
+    <param name="deviation "     value="0.22" />
+    <param name="search_radius"     value="0.8" />
+    <param name="cell_resolution"      value="0.5" />
+    </node>
+    <node name="map_saver" pkg="map_server" type="map_saver" args="-f 7" />
+</launch>

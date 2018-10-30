@@ -1,0 +1,16 @@
+<launch>
+  <remap from="/odom" to="/xqserial_server/Odom" />
+  <param name="use_sim_time" value="false" />
+  <node pkg="tf" type="static_transform_publisher" name="laserlink_broadcaster" args="-0.25 0 0.3 3.1415926 0 0  base_link  laser 100"/>
+
+  <!-- EDIT THIS LINE TO REFLECT THE NAME OF YOUR OWN MAP FILE
+       Can also be overridden on the command line -->
+  <arg name="map" default="map.yaml" />
+
+  <!-- Run the map server with the desired map -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find nav_test)/maps/$(arg map)"/>
+
+  <!-- Start move_base  -->
+  <include file="$(find nav_test)/launch/xiaoqiang_move_base.launch" /
+
+</launch>
